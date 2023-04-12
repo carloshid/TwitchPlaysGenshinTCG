@@ -1,0 +1,12 @@
+# Visual Studio files
+.vs/
+TwitchPlaysGenshinTCG/bin/
+TwitchPlaysGenshinTCG/obj/
+*.user
+
+# Dependency folders
+node_modules/
+packages/
+
+# Configuration files
+TwitchPlaysGenshinTCG/App.config
