@@ -15,6 +15,11 @@ namespace TwitchPlaysGenshinTCG
             var token = ConfigurationManager.AppSettings["Token"];
             var channel = ConfigurationManager.AppSettings["Channel"];
 
+            if (username == null || token == null || channel == null)
+            {
+                throw new Exception("Invalid configuration");
+            }
+
             Console.WriteLine("Starting");
             TwitchChatClient client = new TwitchChatClient(username, token);
             await client.Start(channel);
