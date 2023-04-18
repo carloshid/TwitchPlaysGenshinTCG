@@ -123,6 +123,10 @@ namespace TwitchPlaysGenshinTCG
             else 
             {
                 votes.Add(command, 1);
+                if (threshhold == 1) 
+                {
+                    executeCommand(command);
+                }
             }
         }
 
@@ -169,6 +173,8 @@ namespace TwitchPlaysGenshinTCG
             {
                 GameActions.elementalTuning(int.Parse(split[1]));
             }
+
+            votes.Clear();
         }
     }
 }

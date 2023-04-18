@@ -11,6 +11,18 @@ namespace TwitchPlaysGenshinTCG
         [STAThread]
         static async Task Main()
         {
+            
+
+            ScreenScanner sc = new ScreenScanner();
+           
+            double sim = sc.getSimilarity();
+            
+            Debug.WriteLine(sim);
+            
+
+            return;
+
+
             var username = ConfigurationManager.AppSettings["Username"];
             var token = ConfigurationManager.AppSettings["Token"];
             var channel = ConfigurationManager.AppSettings["Channel"];
