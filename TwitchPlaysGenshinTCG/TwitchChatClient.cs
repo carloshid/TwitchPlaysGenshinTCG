@@ -13,6 +13,7 @@ namespace TwitchPlaysGenshinTCG
     {
         private string name;
         private string token;
+        public static bool stop = false;
 
         public TwitchChatClient(String name, String token)
         {
@@ -38,13 +39,17 @@ namespace TwitchPlaysGenshinTCG
             string[] split;
             int messageIndex;
             // Continously read the messages in the chat
-            while (true)
+            while (!stop)
             {
                 message = await reader.ReadLineAsync();
+                if (stop) 
+                {
+                    break;
+                }
                 split = message.Split(" ");
 
                 // If pinged by Twitch, send a response
-                if (message.StartsWith("PING")) 
+                if (message.StartsWith("PING"))
                 {
                     await writer.WriteLineAsync($"PONG {split[1]}");
                 }
@@ -56,12 +61,14 @@ namespace TwitchPlaysGenshinTCG
                     message = message.Substring(messageIndex);
                     Debug.WriteLine(message);
 
-                    if (message.StartsWith('!')) 
-                    { 
+                    if (message.StartsWith('!'))
+                    {
 
                     }
                 }
             }
+
+            stop = false;
 
         }
 

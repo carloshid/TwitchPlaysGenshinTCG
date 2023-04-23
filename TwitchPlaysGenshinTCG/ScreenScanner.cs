@@ -8,15 +8,12 @@ using System.Diagnostics;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Drawing;
-using Accord.Imaging;
 
 namespace TwitchPlaysGenshinTCG
 {
     internal class ScreenScanner
     {
-        private double similarityThreshhold = 0.9;
-
-
+        private double similarityThreshhold = 10;
 
         public void updateCardAmount()
         {
@@ -27,81 +24,59 @@ namespace TwitchPlaysGenshinTCG
         public bool imagePresent(ScreenElement element)
         {
             // Compare element.image to screen
-            return false;
+            Image<Bgr, Byte> screenImage = getScreenImage(element);
+            Image<Gray, float> diff = element.image.Convert<Gray, float>().Sub(screenImage.Convert<Gray, float>());
+            double mse = CvInvoke.Mean(diff.Mul(diff)).V0;
+
+            return (mse < similarityThreshhold);
         }
 
-        public void getScreenImage(ScreenElement element) 
-        { 
-            // Get the screen image based on element.x, etc..
-        }
-
-        public double getSimilarity() 
+        public Image<Bgr, byte> getScreenImage(ScreenElement e) 
         {
-            Bitmap bitmap = Properties.Resources.image1;
+            // Get the screen image based on element.x, etc..
+            Rectangle region = new Rectangle(e.x, e.y, e.width, e.height);
+            Bitmap bitmap = new Bitmap(e.width, e.height);
+            Graphics.FromImage(bitmap).CopyFromScreen(region.Location, Point.Empty, region.Size);
+
+            return bitmap.ToImage<Bgr, Byte>();
+        }
+
+    }
+
+    internal class ScreenElement
+    {
+        // TODO: Update values here later after adding in the correct images
+        public static readonly ScreenElement StartingHand = new ScreenElement(0, 0, 0, 0, Properties.Resources.StartingHand);
+        public static readonly ScreenElement SetActiveCharacter = new ScreenElement(0, 0, 0, 0, Properties.Resources.SetActiveCharacter);
+        public static readonly ScreenElement Reroll = new ScreenElement(0, 0, 0, 0, Properties.Resources.Reroll);
+        public static readonly ScreenElement NowActing = new ScreenElement(0, 0, 0, 0, Properties.Resources.NowActing);
+        public static readonly ScreenElement NowWaiting = new ScreenElement(0, 0, 0, 0, Properties.Resources.NowWaiting);
+
+        public int x { get; }
+        public int y { get; }
+        public int width { get; }
+        public int height { get; }
+        public Image<Bgr, byte> image { get; }
+
+        public ScreenElement(int x, int y, int width, int height, Bitmap bitmap) 
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+
             byte[,,] imageData = new byte[bitmap.Height, bitmap.Width, 3];
-            for (int i = 0; i < bitmap.Height; i++) 
+            for (int i = 0; i < bitmap.Height; i++)
             {
-                for (int j = 0; j < bitmap.Width; j++) {
+                for (int j = 0; j < bitmap.Width; j++)
+                {
                     Color pixelColor = bitmap.GetPixel(j, i);
                     imageData[i, j, 0] = pixelColor.B;
                     imageData[i, j, 0] = pixelColor.G;
                     imageData[i, j, 0] = pixelColor.R;
                 }
             }
-            Image<Bgr, byte> image1 = new Image<Bgr, byte>(imageData);
-            Bitmap bitmap2 = Properties.Resources.image2;
-            byte[,,] imageData2 = new byte[bitmap2.Height, bitmap2.Width, 3];
-            for (int i = 0; i < bitmap2.Height; i++)
-            {
-                for (int j = 0; j < bitmap2.Width; j++)
-                {
-                    Color pixelColor = bitmap2.GetPixel(j, i);
-                    imageData2[i, j, 0] = pixelColor.B;
-                    imageData2[i, j, 0] = pixelColor.G;
-                    imageData2[i, j, 0] = pixelColor.R;
-                }
-            }
-            Image<Bgr, byte> image2 = new Image<Bgr, byte>(imageData2);
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            Image<Gray, float> diff = image2.Convert<Gray, float>().Sub(image1.Convert<Gray, float>());
-            double mse = CvInvoke.Mean(diff.Mul(diff)).V0;
-
-
-            stopwatch.Stop();
-            long elapsedTime = stopwatch.ElapsedMilliseconds;
-            Debug.WriteLine(elapsedTime);
-
-            
-
-            return mse;
-            //return 0;
-        }
-    }
-
-    internal class ScreenElement
-    {
-        public static readonly ScreenElement StartingHand = new ScreenElement(30, 20, 100, 100, "StartingHand.png");
-        public static readonly ScreenElement SetActiveCharacter = new ScreenElement(30, 20, 100, 100, "SetActiveCharacter.png");
-        public static readonly ScreenElement Reroll = new ScreenElement(25, 200, 200, 500, "Reroll.png");
-        public static readonly ScreenElement NowActing = new ScreenElement(25, 200, 200, 500, "NowActing.png");
-        public static readonly ScreenElement NowWaiting = new ScreenElement(25, 200, 200, 500, "NowWaiting.png");
-
-        public int x { get; }
-        public int y { get; }
-        public int width { get; }
-        public int height { get; }
-        public string image { get; }
-
-        public ScreenElement(int x, int y, int width, int height, string image) 
-        {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.image = image;
+            this.image = new Image<Bgr, byte>(imageData);
         }
     }
 }
