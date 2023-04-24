@@ -40,16 +40,16 @@ namespace TwitchPlaysGenshinTCG
             INPUT[] inputs = new INPUT[2];
 
             inputs[0].type = 0; // input type is mouse
-            inputs[0].mi.dx = x * (65535 / Screen.PrimaryScreen.Bounds.Width);
-            inputs[0].mi.dy = y * (65535 / Screen.PrimaryScreen.Bounds.Height);
+            inputs[0].mi.dx = x * (65535 / 1920);
+            inputs[0].mi.dy = y * (65535 / 1080);
             inputs[0].mi.mouseData = 0;
             inputs[0].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
             inputs[0].mi.time = 0;
             inputs[0].mi.dwExtraInfo = IntPtr.Zero;
 
             inputs[1].type = 0; // input type is mouse
-            inputs[1].mi.dx = x * (65535 / Screen.PrimaryScreen.Bounds.Width);
-            inputs[1].mi.dy = y * (65535 / Screen.PrimaryScreen.Bounds.Height);
+            inputs[1].mi.dx = x * (65535 / 1920);
+            inputs[1].mi.dy = y * (65535 / 1080);
             inputs[1].mi.mouseData = 0;
             inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
             inputs[1].mi.time = 0;

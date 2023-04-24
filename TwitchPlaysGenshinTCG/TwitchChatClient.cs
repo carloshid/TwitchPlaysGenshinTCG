@@ -42,10 +42,9 @@ namespace TwitchPlaysGenshinTCG
             while (!stop)
             {
                 message = await reader.ReadLineAsync();
-                if (stop) 
-                {
-                    break;
-                }
+                if (stop) break;
+                if (message == null) continue;
+
                 split = message.Split(" ");
 
                 // If pinged by Twitch, send a response

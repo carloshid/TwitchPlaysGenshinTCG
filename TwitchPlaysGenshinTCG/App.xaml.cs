@@ -1,26 +1,19 @@
-using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
-using System.Runtime.InteropServices;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace TwitchPlaysGenshinTCG
 {
-    internal static class Program
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
-
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static async Task Main()
-        {
-
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
-
-          
-        }
-
-        public static async void StartTwitchClient() 
+        public static async void StartTwitchClient()
         {
             var username = ConfigurationManager.AppSettings["Username"];
             var token = ConfigurationManager.AppSettings["Token"];
@@ -35,6 +28,5 @@ namespace TwitchPlaysGenshinTCG
             TwitchChatClient client = new TwitchChatClient(username, token);
             await client.Start(channel);
         }
-
     }
 }
