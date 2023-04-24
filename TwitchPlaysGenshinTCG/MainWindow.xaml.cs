@@ -22,6 +22,7 @@ namespace TwitchPlaysGenshinTCG
     public partial class MainWindow : Window
     {
         private Thread twitchThread;
+        private Overlay overlay;
 
         public MainWindow()
         {
@@ -30,13 +31,21 @@ namespace TwitchPlaysGenshinTCG
 
         private void Start_Click(object sender, RoutedEventArgs e) 
         {
-            twitchThread = new Thread(new ThreadStart(App.StartTwitchClient));
-            twitchThread.Start();
+            //twitchThread = new Thread(new ThreadStart(App.StartTwitchClient));
+            //twitchThread.Start();
+
+            overlay = new Overlay();
+            overlay.Show();
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             TwitchChatClient.stop = true;
+
+            if (overlay != null) 
+            {
+                overlay.Close();
+            }
         }
     }
 }
