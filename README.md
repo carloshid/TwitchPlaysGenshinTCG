@@ -22,8 +22,8 @@
 | !end              | Ends the current turn                         |
 | !tune [n]         | Elemental tune using the n-th card            |
 
-Additionally, when selecting cards or dice to reroll, use ! follewed by numbers from 1 to 8 which correspond to the ones to reroll, or !none:
-Ex:
-!4	-	rerolls the 4th card or dice
-!1 3 7	-	rerolls the 1st, 3rd and 7th cards or dice
-!none	-	keeps all the cards or dice
+Additionally, when selecting cards or dice to reroll, use ! follewed by numbers from 1 to 8 which correspond to the ones to reroll, or !none:  
+Ex:  
+!4	-	rerolls the 4th card or dice  
+!1 3 7	-	rerolls the 1st, 3rd and 7th cards or dice  
+!none	-	keeps all the cards or dice  
