@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace TwitchPlaysGenshinTCG
 {
@@ -30,9 +31,9 @@ namespace TwitchPlaysGenshinTCG
         // Use the current character's normal attack
         public static void useNormalAttack()
         {
-            MouseClicker.LeftClick(1610, 960); // Click the elemental burst button to select it
+            MouseClicker.LeftClick(1610, 960); // Click the normal attack button to select it
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
-            MouseClicker.LeftClick(1610, 960); // Click the elemental burst button again to cast it
+            MouseClicker.LeftClick(1610, 960); // Click the normal attack button again to cast it
         }
 
         // End the current round

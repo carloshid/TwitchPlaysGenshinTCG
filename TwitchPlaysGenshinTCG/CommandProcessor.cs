@@ -13,7 +13,7 @@ namespace TwitchPlaysGenshinTCG
         private static Dictionary<string, int> votes = new Dictionary<string, int>();
 
         // Command is executed when it has at least 2 votes
-        private static int threshhold = 2;
+        private static int threshhold = 1;
 
         // Current number of cards
         private static int cardsInHand = 0;

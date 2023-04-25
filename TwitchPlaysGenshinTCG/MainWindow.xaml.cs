@@ -31,8 +31,8 @@ namespace TwitchPlaysGenshinTCG
 
         private void Start_Click(object sender, RoutedEventArgs e) 
         {
-            //twitchThread = new Thread(new ThreadStart(App.StartTwitchClient));
-            //twitchThread.Start();
+            twitchThread = new Thread(new ThreadStart(App.StartTwitchClient));
+            twitchThread.Start();
 
             overlay = new Overlay();
             overlay.Show();

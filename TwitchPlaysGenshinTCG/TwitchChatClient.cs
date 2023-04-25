@@ -62,7 +62,7 @@ namespace TwitchPlaysGenshinTCG
 
                     if (message.StartsWith('!'))
                     {
-
+                        CommandProcessor.processCommand(message.Substring(1));
                     }
                 }
             }
