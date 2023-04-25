@@ -8,7 +8,8 @@ namespace TwitchPlaysGenshinTCG
 {
     internal class Game
     {
-        private static TurnStatus turnStatus;
+        // TODO : change this
+        private static TurnStatus turnStatus = TurnStatus.ChooseCards;
 
         // Current number of cards
         private static int cardsInHand = 0;
@@ -16,6 +17,11 @@ namespace TwitchPlaysGenshinTCG
         public static TurnStatus getTurnStatus() 
         {
             return turnStatus;
+        }
+
+        public static void setTurnStatus(TurnStatus status)
+        {
+            turnStatus = status;
         }
 
         public static int getCardAmount()
@@ -28,11 +34,12 @@ namespace TwitchPlaysGenshinTCG
 
     }
 
-    internal enum TurnStatus 
+    public enum TurnStatus 
     { 
         Waiting,
         ChooseCards,
         ChooseDice,
-        Action
+        Action,
+        SelectCharacter
     }
 }
