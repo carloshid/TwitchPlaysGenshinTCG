@@ -13,10 +13,15 @@ namespace TwitchPlaysGenshinTCG
 {
     internal class ScreenScanner
     {
-        private double similarityThreshhold = 10;
+        private double similarityThreshhold = 18;
 
-        public void updateCardAmount()
+        public int updateCardAmount()
         {
+            for (int i = 0; i <= 10; i++) 
+            {
+                if (imagePresentCard(i)) return i;
+            }
+            return -1;
         }
 
         public void updateGame() { }
@@ -41,6 +46,29 @@ namespace TwitchPlaysGenshinTCG
             return bitmap.ToImage<Bgr, Byte>();
         }
 
+        private int[] imageX = new int[] { -10, 862, 815, 740, 730, 685, 645, 600, 560, 515, 475};
+        private int[] imageY = new int[] { -10, 1026, 1013, 1015, 1015, 1015, 1015, 1015, 1015, 1015, 1015 };
+
+        public bool imagePresentCard(int n) 
+        {
+            if (n != 0) 
+            {
+                ScreenElement cardElement = new ScreenElement(imageX[n] - 24, imageY[n], 25, 10, Properties.Resources.CardCount);
+
+                Image<Bgr, Byte> screenImage = getScreenImage(cardElement);
+                //Image<Gray, float> diff = cardElement.image.Convert<Gray, float>().Sub(screenImage.Convert<Gray, float>());
+                //Image<Gray, float> a = screenImage.Convert<Gray, float>();
+                //Image<Bgr, Byte> diff = cardElement.image.Sub(screenImage);
+                Image<Bgr, Byte> diff = cardElement.image.AbsDiff(screenImage);
+
+                double mse = CvInvoke.Mean(diff.Mul(diff)).V0;
+                Debug.WriteLine(mse);
+
+                return (mse < similarityThreshhold);
+            }
+
+            return false;
+        }
     }
 
     internal class ScreenElement
@@ -72,8 +100,8 @@ namespace TwitchPlaysGenshinTCG
                 {
                     Color pixelColor = bitmap.GetPixel(j, i);
                     imageData[i, j, 0] = pixelColor.B;
-                    imageData[i, j, 0] = pixelColor.G;
-                    imageData[i, j, 0] = pixelColor.R;
+                    imageData[i, j, 1] = pixelColor.G;
+                    imageData[i, j, 2] = pixelColor.R;
                 }
             }
             this.image = new Image<Bgr, byte>(imageData);

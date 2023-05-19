@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace TwitchPlaysGenshinTCG
 {
@@ -46,6 +47,12 @@ namespace TwitchPlaysGenshinTCG
             {
                 overlay.Close();
             }
+        }
+
+        private void Cards(object sender, RoutedEventArgs e)
+        {
+            int cards = new ScreenScanner().updateCardAmount();
+            Debug.WriteLine(cards);
         }
     }
 }

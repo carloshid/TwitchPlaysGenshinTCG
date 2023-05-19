@@ -21,4 +21,8 @@
     <PackageReference Include="TwitchLib.Api.Helix.Models" Version="3.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 </Project>
