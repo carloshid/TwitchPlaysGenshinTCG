@@ -13,13 +13,21 @@ namespace TwitchPlaysGenshinTCG
         private static Dictionary<string, int> votes = new Dictionary<string, int>();
 
         private static int[] cardVotes = new int[5];
+        private static int totalVotes = 0;
         private static int[] diceVotes = new int[8];
 
-        // Command is executed when it has at least 2 votes
+        // Command is executed when it has at least 1 vote
         private static int threshhold = 1;
+
+        // Threshhold when rerolling dice or initial cards
+        private static int threshholdReroll = 3;
 
         // Current number of cards
         private static int cardsInHand = 0;
+
+        private static List<string> validCommands = new List<string>();
+
+        private static ScreenScanner scanner = new ScreenScanner();
 
         /*
          * Possible commands:
@@ -149,10 +157,11 @@ namespace TwitchPlaysGenshinTCG
                             int curN = numbers[i];
                             cardVotes[curN - 1] += 1;
                         }
+                        totalVotes += 1;
 
                         // TODO : change this
-                        GameActions.rerollCards(numbers.ToArray());
-                        Array.Clear(cardVotes, 0, cardVotes.Length);
+                        //GameActions.rerollCards(numbers.ToArray());
+                        //Array.Clear(cardVotes, 0, cardVotes.Length);
                     }
                     else if (Game.getTurnStatus() == TurnStatus.ChooseDice)
                     {
@@ -161,12 +170,44 @@ namespace TwitchPlaysGenshinTCG
                             int curN = numbers[i];
                             diceVotes[curN - 1] += 1;
                         }
+                        totalVotes += 1;
                         
                         // TODO : change this
-                        GameActions.rerollDice(numbers.ToArray());
-                        Array.Clear(diceVotes, 0, diceVotes.Length);
+                        //GameActions.rerollDice(numbers.ToArray());
+                        //Array.Clear(diceVotes, 0, diceVotes.Length);
+                    }
+
+                    if (totalVotes >= threshholdReroll) 
+                    {
+                        if (Game.getTurnStatus() == TurnStatus.ChooseCards) 
+                        {
+                            List<int> reroll = new List<int>();
+                            for (int i = 0; i < cardVotes.Length; i++) 
+                            {
+                                if (cardVotes[i] * 2 >= totalVotes) reroll.Add(i + 1);
+                            }
+                            GameActions.rerollCards(reroll.ToArray());
+                            Array.Clear(cardVotes, 0, cardVotes.Length);
+                        }
+
+                        if (Game.getTurnStatus() == TurnStatus.ChooseDice)
+                        {
+                            List<int> reroll = new List<int>();
+                            for (int i = 0; i < diceVotes.Length; i++)
+                            {
+                                if (diceVotes[i] * 2 >= totalVotes) reroll.Add(i + 1);
+                            }
+                            GameActions.rerollDice(reroll.ToArray());
+                            Array.Clear(diceVotes, 0, diceVotes.Length);
+                        }
+
+                        
+                        totalVotes = 0;
                     }
                 }     
+
+                
+
             }
 
         }
@@ -259,6 +300,48 @@ namespace TwitchPlaysGenshinTCG
             }
 
             votes.Clear();
+        }
+
+        private static void updateValidCommands() 
+        {
+            validCommands.Clear();
+
+            TurnStatus status = Game.getTurnStatus();
+            int cards = Game.getCardAmount();
+
+            if (status == TurnStatus.SelectCharacter) 
+            {
+                for (int i = 1; i <= 3; i++) 
+                {
+                    if (scanner.charAlive(i)) validCommands.Add("select " + i);
+                }
+                validCommands.Add("concede");
+
+                return;
+            }
+
+            if (status == TurnStatus.Action) 
+            {
+                validCommands.Add("skill");
+                validCommands.Add("burst");
+                validCommands.Add("attack");
+                for (int i = 1; i <= cards; i++) 
+                {
+                    validCommands.Add("cards " + i);
+                    validCommands.Add("tune " + i);
+                }
+                for (int i = 1; i <= 3; i++) 
+                {
+                    if (!scanner.charActive(i) && scanner.charAlive(i)) 
+                    {
+                        validCommands.Add("swap " + i);
+                    }
+                }
+                validCommands.Add("end");
+                validCommands.Add("concede");
+
+                return;
+            }
         }
     }
 }

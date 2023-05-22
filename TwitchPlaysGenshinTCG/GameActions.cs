@@ -12,12 +12,15 @@ namespace TwitchPlaysGenshinTCG
     {
 
         private static Random rand = new Random(); // Used to generate random values for the sleeping times
+        private static ScreenScanner scanner = new ScreenScanner();
 
         // Use the current character's elemental skill
         public static void useElementalSkill() {
             MouseClicker.LeftClick(1717, 960); // Click the elemental skill button to select it
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(1717, 960); // Click the elemental skill button again to cast it
+
+            scanner.updateGame();
         }
 
         // Use the current character's elemental burst
@@ -26,6 +29,8 @@ namespace TwitchPlaysGenshinTCG
             MouseClicker.LeftClick(1825, 960); // Click the elemental burst button to select it
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(1825, 960); // Click the elemental burst button again to cast it
+
+            scanner.updateGame();
         }
 
         // Use the current character's normal attack
@@ -34,6 +39,8 @@ namespace TwitchPlaysGenshinTCG
             MouseClicker.LeftClick(1610, 960); // Click the normal attack button to select it
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(1610, 960); // Click the normal attack button again to cast it
+
+            scanner.updateGame();
         }
 
         // End the current round
@@ -43,8 +50,8 @@ namespace TwitchPlaysGenshinTCG
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(350, 540); // Click on "End round"
 
-            // TODO : change this to use the screen scanner
             Game.setTurnStatus(TurnStatus.ChooseDice);
+            scanner.updateGame();
         }
 
         // Swap characters (swapTo can be 1-3)
@@ -55,6 +62,8 @@ namespace TwitchPlaysGenshinTCG
             MouseClicker.LeftClick(1825, 960); // Click the swap button to select it
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(1825, 960); // Click the swap button again to swap
+
+            scanner.updateGame();
         }
 
         // Reroll dice (each dice is 1-8)
@@ -70,8 +79,8 @@ namespace TwitchPlaysGenshinTCG
             }
             MouseClicker.LeftClick(970, 950); // Click the "Confirm" button
 
-            // TODO : change this to use the screen scanner
             Game.setTurnStatus(TurnStatus.Action);
+            scanner.updateGame();
         }
 
         // Reroll cards (each card is 1-5)
@@ -91,8 +100,8 @@ namespace TwitchPlaysGenshinTCG
             }
             MouseClicker.LeftClick(970, 950); // Click the "Confirm" button
 
-            // TODO : change this to use the screen scanner
             Game.setTurnStatus(TurnStatus.SelectCharacter);
+            scanner.updateGame();
         }
 
         // Concede
@@ -103,6 +112,8 @@ namespace TwitchPlaysGenshinTCG
             MouseClicker.LeftClick(1600, 260); // Click on "Concede"
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(1170, 760); // Click on "Confirm"
+
+            scanner.updateGame();
         }
 
         // Select character (1-3)
@@ -112,8 +123,8 @@ namespace TwitchPlaysGenshinTCG
             Thread.Sleep(rand.Next(1000, 2000)); // Sleep for 1-2 seconds
             MouseClicker.LeftClick(540 + 210 * character, 780); // Click the character to confirm
 
-            // TODO : change this to use the screen scanner
             Game.setTurnStatus(TurnStatus.ChooseDice);
+            scanner.updateGame();
         }
 
         // Use card (card value between 1 and # of cards in hand)
