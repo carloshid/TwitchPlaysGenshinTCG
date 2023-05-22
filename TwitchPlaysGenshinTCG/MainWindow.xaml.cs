@@ -51,8 +51,17 @@ namespace TwitchPlaysGenshinTCG
 
         private void Cards(object sender, RoutedEventArgs e)
         {
-            int cards = new ScreenScanner().updateCardAmount();
+            ScreenScanner sc = new ScreenScanner();
+
+            int cards = sc.updateCardAmount();
             Debug.WriteLine(cards);
+
+            Debug.WriteLine("NowActing: " + sc.imagePresent(ScreenElement.NowActing));
+            Debug.WriteLine("NowWaiting: " + sc.imagePresent(ScreenElement.NowWaiting));
+            Debug.WriteLine("Reroll: " + sc.imagePresent(ScreenElement.Reroll));
+            Debug.WriteLine("SetActiveChar: " + sc.imagePresent(ScreenElement.SetActiveCharacter));
+            Debug.WriteLine("StartingHand: " + sc.imagePresent(ScreenElement.StartingHand));
+            Debug.WriteLine("ChooseAChar: " + sc.imagePresent(ScreenElement.ChooseACharacter));
         }
     }
 }

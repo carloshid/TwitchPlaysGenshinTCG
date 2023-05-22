@@ -73,12 +73,12 @@ namespace TwitchPlaysGenshinTCG
 
     internal class ScreenElement
     {
-        // TODO: Update values here later after adding in the correct images
-        public static readonly ScreenElement StartingHand = new ScreenElement(0, 0, 0, 0, Properties.Resources.StartingHand);
-        public static readonly ScreenElement SetActiveCharacter = new ScreenElement(0, 0, 0, 0, Properties.Resources.SetActiveCharacter);
-        public static readonly ScreenElement Reroll = new ScreenElement(0, 0, 0, 0, Properties.Resources.Reroll);
-        public static readonly ScreenElement NowActing = new ScreenElement(0, 0, 0, 0, Properties.Resources.NowActing);
-        public static readonly ScreenElement NowWaiting = new ScreenElement(0, 0, 0, 0, Properties.Resources.NowWaiting);
+        public static readonly ScreenElement StartingHand = new ScreenElement(750, 160, 200, 50, Properties.Resources.StartingHand);
+        public static readonly ScreenElement SetActiveCharacter = new ScreenElement(1600, 800, 150, 100, Properties.Resources.SetActiveCharacter);
+        public static readonly ScreenElement Reroll = new ScreenElement(850, 160, 200, 50, Properties.Resources.Reroll);
+        public static readonly ScreenElement NowActing = new ScreenElement(140, 1020, 100, 30, Properties.Resources.NowActing);
+        public static readonly ScreenElement NowWaiting = new ScreenElement(140, 1020, 100, 30, Properties.Resources.NowWaiting);
+        public static readonly ScreenElement ChooseACharacter = new ScreenElement(140, 1020, 100, 30, Properties.Resources.ChooseACharacter);
 
         public int x { get; }
         public int y { get; }
